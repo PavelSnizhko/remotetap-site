@@ -621,7 +621,7 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
       <li><a href="#install">Install</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
-    <span class="nav-version">v1.2.0 · stable</span>
+    <span class="nav-version">v0.1-debug · dev</span>
   </div>
 </nav>
 
@@ -633,7 +633,7 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
     <div class="hero-inner">
       <div>
         <div class="hero-kicker">
-          <span class="pill-tag live">macOS · available</span>
+          <span class="pill-tag live">macOS · Debug Build</span>
           <span class="pill-tag soon">Windows · in development</span>
         </div>
 
@@ -660,10 +660,10 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
         </div>
 
         <div class="hero-meta" style="margin-top: 36px;">
-          <span>Version <b>1.2.0</b></span>
+          <span>Version <b>0.1-debug</b></span>
           <span>Requires <b>macOS 13 Ventura or later</b></span>
           <span>Apple Silicon + Intel · Universal</span>
-          <span>Signed · Notarized by Apple</span>
+          <span>Development signed · not notarized</span>
         </div>
       </div>
 
@@ -727,45 +727,48 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
 
       <!-- macOS -->
       <div class="dl-card dl-card-mac">
-        <div class="status live">macOS · Available</div>
+        <div class="status" style="color:#d97706;">macOS · Debug Build</div>
         <h3 class="display-m">RemoteTap Helper <br/>for Mac</h3>
         <p>Menu bar agent. Starts at login. No dock icon, no window, no fuss.</p>
 
         <div class="specs-grid">
-          <div class="spec-item"><div class="k">Version</div><div class="v">1.2.0</div></div>
-          <div class="spec-item"><div class="k">Released</div><div class="v">Apr 2026</div></div>
+          <div class="spec-item"><div class="k">Version</div><div class="v">debug</div></div>
+          <div class="spec-item"><div class="k">Built</div><div class="v">Jun 2026</div></div>
           <div class="spec-item"><div class="k">Requires</div><div class="v">macOS 13+</div></div>
           <div class="spec-item"><div class="k">Size</div><div class="v">4.2 MB</div></div>
           <div class="spec-item"><div class="k">Architecture</div><div class="v">Universal</div></div>
           <div class="spec-item"><div class="k">Network</div><div class="v">Local only</div></div>
         </div>
 
+        <div style="margin-bottom: 16px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; font-size: 13px; color: #78350f;">
+          <strong>Development build</strong> — not notarized by Apple. Personal testing only. Use right-click → Open to bypass Gatekeeper.
+        </div>
+
         <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-          <a href="#" class="btn btn-primary btn-sm">
+          <a href="https://downloads.remotetap.app/RemoteTap-debug.zip" download="RemoteTap-debug.zip" class="btn btn-primary btn-sm">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M2 13h12"/></svg>
-            Download .dmg
+            Download .zip
           </a>
 
         </div>
 
         <div class="trust-row">
-          <span class="trust-chip">Developer ID signed</span>
-          <span class="trust-chip">Notarized by Apple</span>
+          <span class="trust-chip">Development signed</span>
+          <span class="trust-chip">Not notarized</span>
           <span class="trust-chip">No analytics</span>
         </div>
 
         <div class="checksum-bar" role="group" aria-label="SHA-256 checksum">
           <div class="sha-label">SHA-256</div>
-          <code id="sha-code">a7f2c4b8e1d9f3a5b7c2e8d4f6a1b3c5e7d9f2a4b6c8e1f3a5</code>
+          <code id="sha-code">263810e14cf8d40ed24f30ed48d036865daa97bc7af01de877b9243fd62b6e23</code>
           <button type="button" onclick="copyChecksum(this)">
             <span class="label-text">Copy</span>
           </button>
         </div>
 
         <div class="relnotes">
-          <strong>v1.2.0 — April 18, 2026</strong>
-          Migrated discovery from MultipeerConnectivity to Bonjour for better reliability on mixed networks. Fixes Sonoma menu bar flicker.
-          <a href="#" style="display: inline-block; margin-top: 4px;">Full changelog →</a>
+          <strong>Debug Build — June 27, 2026</strong>
+          Development build for personal testing. Signed with a personal development certificate — not yet Developer ID signed or notarized. Production release will be available once Apple Developer subscription is active.
         </div>
       </div>
 
@@ -852,7 +855,7 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
     </div>
     <div class="foot-bottom">
       <span>© 2026 RemoteTap Helper · Not affiliated with Apple Inc.</span>
-      <span>v1.2.0 · sha256 a7f2…3c9e</span>
+      <span>v0.1-debug · development build</span>
     </div>
   </div>
 </footer>
@@ -914,18 +917,18 @@ window.handleNotify = handleNotify;
 
 /* ─── Install steps ──────────────────────────────────── */
 const STEPS = [
-  { n:"Download the .dmg",
-    d:"Click the download button. Your browser will save a .dmg file — Downloads folder is fine.",
-    w:"A .dmg is a mountable disk image. It's how Mac apps are typically distributed outside the App Store." },
-  { n:"Open and drag to Applications",
-    d:"Double-click the .dmg to mount it. Drag the RemoteTap Helper icon onto the Applications folder shortcut.",
-    w:"Installing into /Applications (not running from the disk image) ensures macOS treats it as a persistent app and settings save correctly." },
+  { n:"Download the .zip",
+    d:"Click the download button. Your browser will save a .zip file — Downloads folder is fine.",
+    w:"The app is distributed as a zip archive. Double-clicking it extracts Remote Tap.app, ready to drag to Applications." },
+  { n:"Unzip and drag to Applications",
+    d:"Double-click the .zip to extract it. Drag Remote Tap.app into your Applications folder.",
+    w:"Installing into /Applications ensures macOS treats it as a persistent app and settings save correctly. Don't run it directly from the Downloads folder." },
   { n:"Launch from Applications",
-    d:"Open your Applications folder and double-click RemoteTap Helper. You can eject and delete the .dmg file now.",
+    d:"Open your Applications folder and double-click Remote Tap. You can delete the .zip file now.",
     w:"Launching from Applications is what tells macOS this is a properly installed app." },
   { n:"Handle the Gatekeeper warning",
-    d:"macOS will say the app can't be opened. Click Done. Then go to System Settings → Privacy & Security and click Open Anyway.",
-    w:"macOS shows this for every app downloaded from the internet that didn't come from the App Store. RemoteTap Helper is Developer ID signed and notarized by Apple — the warning is about where you got it, not what it is." },
+    d:"macOS will say the app can't be opened. Right-click (Control-click) the app icon → Open → click Open in the dialog. Alternatively, go to System Settings → Privacy & Security → Open Anyway.",
+    w:"This is a development build signed with a personal certificate — not yet signed with a Developer ID or notarized by Apple. Right-click → Open is the correct way to bypass Gatekeeper for development builds. The production release will pass Gatekeeper automatically." },
   { n:"Allow local network access",
     d:"macOS will ask if RemoteTap Helper can find and connect to devices on your local network. Click Allow.",
     w:"The whole point of RemoteTap is Bonjour discovery — your iPhone needs to see your Mac. This permission is required for the app to work." },
@@ -961,7 +964,7 @@ const FAQ = [
   { q:"Why isn't this on the Mac App Store?",
     a:`<p>The App Store sandbox restricts the system entitlements RemoteTap Helper requires — specifically the ability to interact with media controls, window focus, and system-level audio routing. These entitlements aren't granted to sandboxed apps, so distributing outside the App Store is the only way to make it work.</p><p>This is an unusual situation and we understand it raises questions — which is why the rest of this FAQ exists.</p>` },
   { q:"Is this safe to download?",
-    a:`<p>The .dmg is signed with a Developer ID certificate issued by Apple and notarized — Apple has scanned the binary and confirmed it contains no known malware. You can verify the signature yourself with <code>codesign -dvv /Applications/RemoteTapHelper.app</code>.</p><p>macOS will still show a warning on first launch because the app didn't come from the App Store. That warning is about <em>the distribution channel</em>, not the app itself. The install guide covers exactly how to proceed.</p>` },
+    a:`<p>This is a development build signed with a personal Apple developer certificate. It has <em>not</em> been signed with a Developer ID or notarized by Apple yet — that requires an active Apple Developer Program subscription. You can verify the signature with <code>codesign -dvv /Applications/Remote\\ Tap.app</code>.</p><p>macOS will show a warning on first launch. Use right-click → Open to proceed. The production release will be fully signed and notarized and will not require this workaround.</p>` },
   { q:"What does this app actually do on my machine?",
     a:`<p>RemoteTap Helper runs as a menu bar agent — no dock icon, no window. When running it advertises itself on your local network via Bonjour, waits for your iPhone to connect, and executes incoming commands: play/pause, skip, volume, and window focus. That's it.</p><p>It opens no outbound connections. It doesn't phone home. It is ~4 MB on disk.</p>` },
   { q:"Does this app send any data off my device?",
