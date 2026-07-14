@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Installation Guide — Remote Tap</title>
+<link rel="icon" type="image/png" href="AppIcon/macos/32x32/Group_4.png"/>
+<link rel="apple-touch-icon" href="AppIcon/ios/180x180/Group_4.png"/>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg-primary:    #0a0f1a;
+  --bg-elevated:   #111827;
+  --bg-subtle:     #1a2332;
+  --border:        rgba(255,255,255,0.08);
+  --accent:        #3b82f6;
+  --accent-hover:  #60a5fa;
+  --accent-glow:   rgba(59,130,246,0.4);
+  --text-primary:  #ffffff;
+  --text-secondary: rgba(255,255,255,0.6);
+  --text-muted:    rgba(255,255,255,0.35);
+  --font: "Aeonik","General Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --mono: "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.5;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--accent); color: #fff; }
+a { color: inherit; text-underline-offset: 3px; }
+
+.wrap { max-width: 800px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 599px) { .wrap { padding: 0 20px; } }
+
+/* Nav */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  height: 56px;
+  display: flex; align-items: center;
+}
+.nav-inner {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  width: 100%; max-width: 800px;
+  margin: 0 auto; padding: 0 32px;
+}
+@media (max-width: 599px) { .nav-inner { padding: 0 20px; } }
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: #fff;
+  font-size: 16px; font-weight: 500;
+}
+.nav-logo img { width: 28px; height: 28px; border-radius: 7px; }
+.nav-link {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 14px; font-weight: 500;
+  transition: color 120ms ease;
+}
+.nav-link:hover { color: #fff; }
+
+/* Page header */
+.page-header {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+}
+.page-header h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.page-header p {
+  color: var(--text-secondary);
+  font-size: 18px;
+  margin-top: 12px;
+  max-width: 56ch;
+}
+
+/* Platform tabs */
+.platform-tabs {
+  display: flex; gap: 0;
+  margin-top: 48px;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  font-family: var(--font);
+  font-size: 15px; font-weight: 500;
+  padding: 14px 24px;
+  background: none; border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 150ms ease, border-color 150ms ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
+.tab-btn svg { opacity: 0.7; }
+.tab-btn.active svg { opacity: 1; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Steps */
+.steps-list {
+  margin-top: 8px;
+  display: flex; flex-direction: column;
+}
+.step {
+  display: grid; grid-template-columns: 44px 1fr;
+  gap: 20px; padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: 0; }
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 15px; font-weight: 600;
+  display: grid; place-items: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.step h4 {
+  font-size: 20px; font-weight: 400;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,0.9);
+}
+.step p {
+  font-size: 16px; color: var(--text-secondary); line-height: 1.55;
+}
+.step .why {
+  margin-top: 12px; padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  border-left: 2px solid var(--accent);
+  font-size: 14px; color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* FAQ */
+.faq-section {
+  padding: 64px 0;
+  border-top: 1px solid var(--border);
+}
+.faq-section h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+.faq-section > p {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin-bottom: 32px;
+}
+.faq-list {
+  border-top: 1px solid var(--border);
+}
+details.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+details.faq-item summary {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; padding: 20px 0; cursor: pointer;
+  list-style: none; font-size: 17px; font-weight: 400;
+  color: rgba(255,255,255,0.85);
+  transition: color 120ms ease;
+}
+details.faq-item summary::-webkit-details-marker { display: none; }
+details.faq-item summary:hover { color: var(--accent-hover); }
+.faq-chevron {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: grid; place-items: center; flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform 300ms ease, border-color 200ms ease, background 200ms ease;
+}
+details.faq-item[open] .faq-chevron {
+  transform: rotate(45deg);
+  border-color: var(--accent); background: var(--accent); color: #fff;
+}
+.faq-body {
+  padding: 0 36px 20px 0;
+  font-size: 15px; color: var(--text-secondary); line-height: 1.65;
+  max-width: 68ch;
+}
+.faq-body p { margin-bottom: 10px; }
+.faq-body p:last-child { margin-bottom: 0; }
+.faq-body a { color: var(--accent-hover); text-decoration: underline; }
+.faq-body code {
+  font-family: var(--mono); font-size: 13px;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  padding: 1px 6px; border-radius: 3px;
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.site-footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+.site-footer a:hover { color: #fff; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="AppIcon/macos/32x32/Group_4.png" alt="Remote Tap icon"/>
+      Remote Tap
+    </a>
+    <a href="index.html" class="nav-link">Back to download</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="page-header">
+    <h1>Installation guide</h1>
+    <p>Step-by-step setup for macOS and Windows. If your OS shows a warning, there's a plain-language explanation below the step that triggered it.</p>
+  </div>
+
+  <div class="platform-tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="macos">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.15 13.16c-.58.85-1.2 1.7-2.14 1.72-.94.02-1.24-.56-2.31-.56-1.08 0-1.41.54-2.3.58-.92.04-1.62-.92-2.21-1.76C1.97 11.3 1.06 8.16 2.33 6.06c.63-1.04 1.76-1.7 2.98-1.72 .91-.02 1.76.61 2.31.61.56 0 1.6-.76 2.7-.65.46.02 1.75.19 2.58 1.4-.07.04-1.54.9-1.52 2.68.02 2.13 1.87 2.84 1.89 2.85-.02.06-.3 1.02-.92 2.02zM9.9 2.82c.5-.6.84-1.44.75-2.28-.72.03-1.6.48-2.12 1.09-.46.54-.87 1.4-.76 2.22.81.06 1.63-.41 2.13-1.03z"/></svg>
+      macOS
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="windows">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.3l6.5-.9v6.3H0V2.3zm7.3-1l8.7-1.2v7.6H7.3V1.3zM16 8.4v7.6l-8.7-1.2V8.4H16zM6.5 14.6L0 13.7V8.4h6.5v6.2z"/></svg>
+      Windows
+    </button>
+  </div>
+
+  <!-- macOS steps -->
+  <div class="tab-panel active" id="panel-macos">
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h4>Download the .zip</h4>
+          <p>Click the download button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>. Your browser will save a .zip file — Downloads folder is fine.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app is distributed as a zip archive. Double-clicking it extracts Remote Tap.app, ready to drag to Applications.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h4>Unzip and drag to Applications</h4>
+          <p>Double-click the .zip to extract it. Drag Remote Tap.app into your Applications folder.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Installing into /Applications ensures macOS treats it as a persistent app and settings save correctly. Don't run it directly from the Downloads folder.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h4>Launch from Applications</h4>
+          <p>Open your Applications folder and double-click Remote Tap. You can delete the .zip file now.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Launching from Applications is what tells macOS this is a properly installed app.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h4>Handle the Gatekeeper warning</h4>
+          <p>macOS will say the app can't be opened. Right-click (Control-click) the app icon → Open → click Open in the dialog. Alternatively, go to System Settings → Privacy &amp; Security → Open Anyway.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>This is a development build signed with a personal certificate — not yet signed with a Developer ID or notarized by Apple. Right-click → Open is the correct way to bypass Gatekeeper for development builds. The production release will pass Gatekeeper automatically.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h4>Allow local network access</h4>
+          <p>macOS will ask if Remote Tap can find and connect to devices on your local network. Click Allow.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The whole point of Remote Tap is Bonjour discovery — your iPhone needs to see your Mac. This permission is required for the app to work.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div>
+          <h4>Open Remote Tap on your iPhone</h4>
+          <p>Your Mac should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>No internet needed. Everything stays on your local network.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Windows steps -->
+  <div class="tab-panel" id="panel-windows">
+    <div class="steps-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h4>Download the .zip</h4>
+          <p>Click the Windows download button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>. Save the .zip file to your Downloads folder.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app is distributed as a zip archive containing the executable and supporting files.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h4>Extract the zip</h4>
+          <p>Right-click the .zip → "Extract All..." and choose a permanent location (e.g. Program Files or your user folder).</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Windows needs to extract the files before you can run the app. Don't run it directly from within the zip.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h4>Run the executable</h4>
+          <p>Open the extracted folder and double-click MediaRemote.exe. The app runs in the system tray.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Like the macOS version, it runs quietly in the background — no window, just a system tray icon.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <h4>Allow through Windows Firewall</h4>
+          <p>Windows will ask if you want to allow MediaRemote to communicate on your network. Click "Allow access" for private networks.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app needs to listen on your local network so your phone can discover and connect to it. Only private network access is needed.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <h4>Connect from your phone</h4>
+          <p>Open Remote Tap on your iPhone or Android. Your PC should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>No internet needed. Everything stays on your local network.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <h2>Frequently asked questions</h2>
+    <p>The questions people ask before installing software that isn't in an app store.</p>
+
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>
+          <span>Why isn't this in the Mac App Store?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p>The App Store sandbox restricts the system entitlements Remote Tap requires — specifically the ability to interact with media controls, window focus, and system-level audio routing. These entitlements aren't granted to sandboxed apps, so distributing outside the App Store is the only way to make it work.</p>
+          <p>This is an unusual situation and we understand it raises questions — which is why the rest of this FAQ exists.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Is this safe to download?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p>The macOS build is a development build signed with a personal Apple developer certificate. It has <em>not</em> been signed with a Developer ID or notarized by Apple yet. You can verify the signature with <code>codesign -dvv /Applications/Remote\ Tap.app</code>.</p>
+          <p>macOS will show a warning on first launch. Use right-click → Open to proceed. The production release will be fully signed and notarized.</p>
+          <p>The Windows build runs without code signing. Windows Defender SmartScreen may show a warning on first run — click "More info" → "Run anyway."</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>What does this app actually do on my machine?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p>On macOS, Remote Tap runs as a menu bar agent — no dock icon, no window. On Windows, it runs in the system tray. In both cases it advertises itself on your local network, waits for your phone to connect, and executes incoming commands: play/pause, skip, volume, and window focus. That's it.</p>
+          <p>It opens no outbound connections. It doesn't phone home. It makes no internet requests.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>Does this app send any data off my device?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p>No. There is no analytics SDK, no crash reporter, and no telemetry of any kind. The app makes no outbound network connections — it only listens on the local network for your phone.</p>
+          <p>On macOS you can verify this with <code>lsof -i -P | grep RemoteTap</code> or Little Snitch. On Windows, check with Resource Monitor or Wireshark. If this ever changes, it will be disclosed here and in the release notes before the update ships.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>What permissions does the app request?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p><strong>Local Network</strong> (macOS &amp; Windows) — required. Used to advertise on the local network and receive commands from the phone app. Without this the app cannot function.</p>
+          <p><strong>Accessibility</strong> (macOS only) — optional. Only requested if you enable the "window focus" feature. Decline it and everything except window management continues to work normally.</p>
+          <p>No microphone, camera, contacts, calendar, or file system access of any kind.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>
+          <span>How do I uninstall it?</span>
+          <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
+        </summary>
+        <div class="faq-body">
+          <p><strong>macOS:</strong> Quit from the menu bar icon, then drag Remote Tap from your Applications folder to the Trash. To remove all traces, delete <code>~/Library/Application Support/RemoteTapHelper</code>. There are no LaunchAgents, kernel extensions, or files in <code>/Library</code>.</p>
+          <p><strong>Windows:</strong> Right-click the system tray icon and quit, then delete the extracted folder. No registry entries or system modifications to clean up.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    &copy; 2026 Remote Tap · <a href="mailto:hello@remotetap.app">hello@remotetap.app</a> · <a href="index.html">Download</a>
+  </div>
+</footer>
+
+<script>
+function detectOS() {
+  const ua = navigator.userAgent;
+  if (/Windows/i.test(ua)) return 'windows';
+  if (/Macintosh|Mac OS X/i.test(ua)) return 'macos';
+  return 'unknown';
+}
+
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-panel');
+
+function switchTab(platform) {
+  tabs.forEach(t => {
+    const active = t.dataset.tab === platform;
+    t.classList.toggle('active', active);
+    t.setAttribute('aria-selected', active);
+  });
+  panels.forEach(p => {
+    p.classList.toggle('active', p.id === 'panel-' + platform);
+  });
+}
+
+tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+document.addEventListener('DOMContentLoaded', () => {
+  const os = detectOS();
+  if (os === 'windows') switchTab('windows');
+});
+</script>
+
+</body>
+</html>

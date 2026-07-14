@@ -1,1023 +1,271 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>RemoteTap Helper — Mac companion</title>
-
-<!--
-  Font: Aeonik (CoType Foundry) — commercial license required for production.
-  General Sans (ITF / Fontshare) used as a free substitute with similar geometric-grotesque proportions.
-  Swap the @import below for self-hosted Aeonik @font-face declarations when your license is in place.
--->
+<title>Remote Tap — Control your computer from your phone</title>
+<link rel="icon" type="image/png" href="AppIcon/macos/32x32/Group_4.png"/>
+<link rel="apple-touch-icon" href="AppIcon/ios/180x180/Group_4.png"/>
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 
 <style>
-/* ─── Design tokens (PlayStation-inspired) ─────────────────── */
 :root {
-  /* Surfaces */
-  --black:      #000000;
-  --white:      #ffffff;
-  --ice:        #f5f7fa;
-  --divider:    #f3f3f3;
-  --ps-blue:    #0070cc;
-  --ps-cyan:    #1eaedb;
-  --ps-footer:  #003791;
-
-  /* Text */
-  --ink:        #000000;
-  --charcoal:   #1f1f1f;
-  --body-gray:  #6b6b6b;
-  --mute:       #cccccc;
-  --white-text: #ffffff;
-  --dark-link:  #53b1ff;
-
-  /* Commerce */
-  --orange:     #d53b00;
-
-  /* Shadows */
-  --sh-06:  rgba(0,0,0,0.06) 0 5px 9px 0;
-  --sh-08:  rgba(0,0,0,0.08) 0 5px 9px 0;
-  --sh-16:  rgba(0,0,0,0.16) 0 5px 9px 0;
-  --sh-80:  rgba(0,0,0,0.80) 0 5px 9px 0;
-
-  /* Radii */
-  --r3:   3px;
-  --r6:   6px;
-  --r12:  12px;
-  --r19:  19px;
-  --r24:  24px;
-  --rpill: 999px;
-
-  /* Type */
+  --bg-primary:    #0a0f1a;
+  --bg-elevated:   #111827;
+  --bg-subtle:     #1a2332;
+  --border:        rgba(255,255,255,0.08);
+  --accent:        #3b82f6;
+  --accent-hover:  #60a5fa;
+  --accent-glow:   rgba(59,130,246,0.4);
+  --text-primary:  #ffffff;
+  --text-secondary: rgba(255,255,255,0.6);
+  --text-muted:    rgba(255,255,255,0.35);
   --font: "Aeonik","General Sans",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  --mono: "JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 }
-
-/* Dark theme */
-html[data-theme="dark"] {
-  --white:   #0a0a0a;
-  --ice:     #111111;
-  --divider: #1e1e1e;
-  --ink:     #ffffff;
-  --charcoal:#f0f0f0;
-  --body-gray:#999999;
-  --mute:    #444444;
-}
-
-/* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--font);
   font-size: 18px;
   line-height: 1.5;
-  background: var(--white);
-  color: var(--charcoal);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-::selection { background: var(--ps-blue); color: #fff; }
+::selection { background: var(--accent); color: #fff; }
 a { color: inherit; text-underline-offset: 3px; }
 
-/* ─── Wrapper ────────────────────────────────────────────────── */
-.wrap { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
-@media (max-width: 1023px) { .wrap { padding: 0 32px; } }
-@media (max-width: 599px)  { .wrap { padding: 0 20px; } }
-
-/* ─── Nav ────────────────────────────────────────────────────── */
-nav.site-nav {
+/* Nav */
+nav {
   position: sticky; top: 0; z-index: 100;
-  background: var(--black);
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
   height: 56px;
   display: flex; align-items: center;
 }
 .nav-inner {
   display: flex; align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 100%; max-width: 1280px;
+  margin: 0 auto; padding: 0 32px;
 }
+@media (max-width: 599px) { .nav-inner { padding: 0 20px; } }
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
   text-decoration: none; color: #fff;
-  font-size: 16px; font-weight: 500; letter-spacing: -0.01em;
+  font-size: 16px; font-weight: 500;
 }
-.nav-logo .mark {
-  width: 28px; height: 28px; border-radius: 7px;
-  background: var(--ps-blue);
-  display: grid; place-items: center;
-  flex-shrink: 0;
-}
-.nav-logo .mark svg { display: block; }
-.nav-links {
-  display: flex; align-items: center; gap: 32px;
-  list-style: none;
-}
-.nav-links a {
-  color: #fff; text-decoration: none; font-size: 14px; font-weight: 500;
+.nav-logo img { width: 28px; height: 28px; border-radius: 7px; }
+.nav-link {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 14px; font-weight: 500;
   transition: color 120ms ease;
 }
-.nav-links a:hover { color: var(--ps-cyan); }
-.nav-version {
-  font-family: var(--mono); font-size: 11.5px;
-  color: rgba(255,255,255,0.45);
-  letter-spacing: 0.04em;
+.nav-link:hover { color: #fff; }
+
+/* Hero */
+.hero {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 64px 32px;
+  text-align: center;
 }
-@media (max-width: 767px) {
-  .nav-links { display: none; }
+@media (max-width: 599px) { .hero { padding: 48px 20px; } }
+.hero-content {
+  max-width: 560px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0;
 }
 
-/* ─── Primary button ─────────────────────────────────────────── */
+.hero-icon {
+  width: 128px; height: 128px;
+  border-radius: 28px;
+  box-shadow: 0 0 60px var(--accent-glow), 0 0 120px rgba(59,130,246,0.15);
+  margin-bottom: 36px;
+}
+@media (max-width: 599px) {
+  .hero-icon { width: 96px; height: 96px; border-radius: 22px; }
+}
+
+.hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.hero .sub {
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 46ch;
+  margin-bottom: 36px;
+}
+
+/* Download buttons */
+.dl-buttons {
+  display: flex; gap: 12px;
+  flex-wrap: wrap; justify-content: center;
+  margin-bottom: 40px;
+}
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font); font-size: 18px; font-weight: 500;
-  letter-spacing: 0.4px;
+  font-family: var(--font); font-size: 16px; font-weight: 500;
   padding: 14px 28px;
-  border-radius: var(--rpill);
+  border-radius: 999px;
   border: none; cursor: pointer; text-decoration: none;
   transition: background 180ms ease, transform 180ms ease,
               box-shadow 180ms ease, border-color 180ms ease;
   white-space: nowrap;
 }
 .btn-primary {
-  background: var(--ps-blue); color: #fff;
+  background: var(--accent); color: #fff;
   border: 2px solid transparent;
 }
 .btn-primary:hover {
-  background: var(--ps-cyan);
-  border-color: #fff;
-  box-shadow: 0 0 0 2px var(--ps-blue);
-  transform: scale(1.08);
-  color: #fff;
+  background: var(--accent-hover);
+  box-shadow: 0 0 0 2px var(--accent);
+  transform: scale(1.04);
 }
-.btn-ghost {
-  background: transparent; color: var(--charcoal);
-  border: 1px solid #dedede;
+.btn-secondary {
+  background: transparent; color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.15);
 }
-html[data-theme="dark"] .btn-ghost { color: #fff; border-color: #444; }
-.btn-ghost:hover {
-  background: var(--ps-cyan); color: #fff;
-  border-color: #fff;
-  box-shadow: 0 0 0 2px var(--ps-blue);
-  transform: scale(1.08);
+.btn-secondary:hover {
+  background: var(--bg-subtle);
+  border-color: rgba(255,255,255,0.25);
+  transform: scale(1.04);
 }
-.btn-sm { font-size: 14px; font-weight: 700; padding: 10px 20px; letter-spacing: 0.32px; }
-
-/* ─── Section rhythm ─────────────────────────────────────────── */
-.section-dark {
-  background: var(--black);
-  color: #fff;
-  padding: 96px 0;
-}
-.section-light {
-  background: var(--white);
-  color: var(--charcoal);
-  padding: 96px 0;
-}
-.section-light + .section-light {
-  border-top: 1px solid var(--divider);
-}
-@media (max-width: 767px) {
-  .section-dark, .section-light { padding: 64px 0; }
+@media (max-width: 480px) {
+  .dl-buttons { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
 }
 
-/* ─── Display type (weight 300 — PlayStation voice) ──────────── */
-.display-xl {
-  font-size: clamp(36px, 5.5vw, 72px);
-  font-weight: 300; line-height: 1.1;
-  letter-spacing: -0.02em;
+/* Store badges */
+.store-badges {
+  display: flex; gap: 24px;
+  flex-wrap: wrap; justify-content: center;
+  align-items: center;
 }
-.display-l {
-  font-size: clamp(28px, 3.5vw, 48px);
-  font-weight: 300; line-height: 1.15;
-  letter-spacing: -0.01em;
+.store-badge {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  pointer-events: none;
+  opacity: 0.35;
 }
-.display-m {
-  font-size: clamp(22px, 2.5vw, 35px);
-  font-weight: 300; line-height: 1.2;
-}
-.body-text { font-size: 18px; font-weight: 400; line-height: 1.5; letter-spacing: 0.1px; }
-.caption   { font-size: 14px; font-weight: 500; line-height: 1.5; }
-.micro     { font-size: 12px; font-weight: 500; line-height: 1.5; }
-.mono-label {
-  font-family: var(--mono); font-size: 12px;
-  letter-spacing: 0.06em; color: var(--body-gray);
+.store-badge svg { display: block; }
+.store-badge span {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
 }
 
-/* ─── Hero ───────────────────────────────────────────────────── */
-.hero { padding: 112px 0 96px; }
-.hero-inner {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 64px; align-items: center;
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 32px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-muted);
 }
-@media (max-width: 1023px) { .hero-inner { grid-template-columns: 1fr; gap: 48px; } }
-
-.hero-kicker {
-  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px;
-}
-.pill-tag {
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  padding: 6px 14px; border-radius: var(--rpill);
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 0.2px;
-}
-.pill-tag.live { background: rgba(0,112,204,0.35); color: #fff; }
-.pill-tag.soon { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); }
-
-.hero h1 { color: #fff; margin-bottom: 20px; }
-.hero h1 .accent { color: var(--ps-cyan); }
-.hero .sub {
-  color: rgba(255,255,255,0.6);
-  font-size: 18px; font-weight: 400; line-height: 1.5;
-  max-width: 44ch; margin-bottom: 40px;
-}
-.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
-
-.hero-meta {
-  font-family: var(--mono); font-size: 12px;
-  color: rgba(255,255,255,0.35);
-  display: flex; flex-direction: column; gap: 6px;
-}
-.hero-meta span b { color: rgba(255,255,255,0.7); font-weight: 500; }
-
-/* Connection diagram */
-.conn-diagram {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: var(--r24);
-  padding: 36px 32px;
-  display: flex; flex-direction: column; gap: 28px;
-}
-.conn-row {
-  display: flex; align-items: center; gap: 16px;
-}
-.conn-icon {
-  width: 48px; height: 48px; border-radius: var(--r12);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  display: grid; place-items: center; flex-shrink: 0;
-}
-.conn-icon svg { opacity: 0.7; }
-.conn-text .t1 { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.45); }
-.conn-text .t2 { font-size: 16px; font-weight: 400; color: #fff; }
-.conn-wire {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 4px 0;
-}
-.conn-wire-line {
-  width: 1px; height: 28px; background: rgba(255,255,255,0.15);
-  position: relative; overflow: visible;
-}
-.conn-wire-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--ps-blue);
-  box-shadow: 0 0 10px var(--ps-blue);
-  position: absolute; left: 50%; transform: translateX(-50%);
-  animation: flow 2.2s ease-in-out infinite;
-}
-.conn-wire-dot:nth-child(2) { animation-delay: 0.7s; }
-.conn-wire-dot:nth-child(3) { animation-delay: 1.4s; }
-@keyframes flow {
-  0%   { top: 0;    opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-.conn-wire-label {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.3); text-transform: uppercase;
-}
-.conn-status {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
-}
-.conn-status .dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 8px rgba(74,222,128,0.6);
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; transform: scale(1); }
-  50%     { opacity: 0.4; transform: scale(1.4); }
-}
-
-/* ─── Download section ───────────────────────────────────────── */
-.dl-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 24px; margin-top: 56px;
-}
-@media (max-width: 767px) { .dl-grid { grid-template-columns: 1fr; } }
-
-.dl-card {
-  border-radius: var(--r24);
-  padding: 36px;
-  box-shadow: var(--sh-08);
-}
-.dl-card-mac {
-  background: var(--white); border: 1px solid var(--divider);
-}
-html[data-theme="dark"] .dl-card-mac {
-  background: #111; border-color: #2a2a2a;
-}
-.dl-card-win {
-  background: repeating-linear-gradient(
-    135deg,
-    var(--ice) 0 16px,
-    var(--white) 16px 17px
-  );
-  border: 1px dashed var(--mute);
-}
-html[data-theme="dark"] .dl-card-win {
-  background: repeating-linear-gradient(135deg, #111 0 16px, #0a0a0a 16px 17px);
-  border-color: #333;
-}
-
-.dl-card .status {
-  font-size: 12px; font-weight: 700; letter-spacing: 0.3px;
-  margin-bottom: 16px;
-}
-.dl-card .status.live { color: var(--ps-blue); }
-.dl-card .status.soon { color: var(--body-gray); }
-.dl-card h3 { margin-bottom: 8px; font-weight: 300; }
-.dl-card p  { color: var(--body-gray); font-size: 16px; margin-bottom: 28px; }
-
-.specs-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0; margin-bottom: 28px;
-  border-top: 1px solid var(--divider);
-}
-html[data-theme="dark"] .specs-grid { border-color: #2a2a2a; }
-.spec-item {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--divider);
-}
-html[data-theme="dark"] .spec-item { border-color: #2a2a2a; }
-.spec-item .k { font-size: 11px; font-weight: 700; color: var(--body-gray); letter-spacing: 0.2px; margin-bottom: 3px; }
-.spec-item .v { font-size: 14px; font-weight: 500; color: var(--charcoal); }
-html[data-theme="dark"] .spec-item .v { color: #ddd; }
-
-/* checksum bar */
-.checksum-bar {
-  display: flex; align-items: stretch;
-  border: 1px solid var(--divider); border-radius: var(--r6);
-  margin-top: 20px; overflow: hidden;
-  background: var(--ice);
-}
-html[data-theme="dark"] .checksum-bar {
-  background: #111; border-color: #2a2a2a;
-}
-.checksum-bar .sha-label {
-  font-family: var(--mono); font-size: 10px; font-weight: 500;
-  letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 10px 12px; background: var(--divider); color: var(--body-gray);
-  border-right: 1px solid var(--divider);
-  display: grid; place-items: center; flex-shrink: 0;
-}
-html[data-theme="dark"] .checksum-bar .sha-label { background: #1a1a1a; border-color: #2a2a2a; }
-.checksum-bar code {
-  flex: 1; min-width: 0;
-  font-family: var(--mono); font-size: 11.5px;
-  padding: 10px 12px; color: var(--body-gray);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.checksum-bar button {
-  border: 0; border-left: 1px solid var(--divider);
-  background: transparent; padding: 0 14px;
-  font-family: var(--font); font-size: 13px; font-weight: 500;
-  color: var(--ps-blue); cursor: pointer; flex-shrink: 0;
-  transition: background 120ms ease, color 120ms ease;
-}
-.checksum-bar button:hover { background: var(--ps-blue); color: #fff; }
-.checksum-bar button.copied { color: #16a34a; }
-
-/* Trust chips */
-.trust-row {
-  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px;
-}
-.trust-chip {
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  padding: 5px 12px; border-radius: var(--rpill);
-  border: 1px solid var(--divider); background: var(--white);
-  color: var(--body-gray);
-}
-html[data-theme="dark"] .trust-chip { background: #111; border-color: #2a2a2a; }
-
-/* Windows notify form */
-.notify-form {
-  display: flex; gap: 0;
-  border: 1px solid var(--mute); border-radius: var(--r3);
-  overflow: hidden; background: var(--white);
-}
-html[data-theme="dark"] .notify-form { background: #0a0a0a; border-color: #333; }
-.notify-form input {
-  flex: 1; min-width: 0; border: 0; background: transparent;
-  padding: 13px 16px; font-family: var(--font); font-size: 16px;
-  color: var(--charcoal); outline: none;
-}
-html[data-theme="dark"] .notify-form input { color: #eee; }
-.notify-form input::placeholder { color: var(--body-gray); }
-.notify-form input:focus { box-shadow: 0 0 0 2px var(--ps-blue) inset; }
-.notify-form button {
-  border: 0; border-left: 1px solid var(--mute);
-  background: var(--ps-blue); color: #fff;
-  padding: 0 20px; font-family: var(--font); font-size: 14px; font-weight: 700;
-  cursor: pointer; letter-spacing: 0.3px;
-  transition: background 180ms ease;
-}
-.notify-form button:hover { background: var(--ps-cyan); }
-
-/* ─── Install steps ──────────────────────────────────────────── */
-.steps-list { margin-top: 56px; display: flex; flex-direction: column; gap: 0; }
-.step {
-  display: grid; grid-template-columns: 48px 1fr;
-  gap: 24px; padding: 32px 0;
-  border-bottom: 1px solid var(--divider);
-  position: relative;
-}
-html[data-theme="dark"] .step { border-color: #1e1e1e; }
-.step:last-child { border-bottom: 0; }
-.step-num {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--ps-blue); color: #fff;
-  font-size: 16px; font-weight: 600;
-  display: grid; place-items: center;
-  flex-shrink: 0; margin-top: 4px;
-}
-.step-content h4 {
-  font-size: 22px; font-weight: 400;
-  margin-bottom: 8px; color: var(--charcoal);
-}
-html[data-theme="dark"] .step-content h4 { color: #eee; }
-.step-content p { font-size: 16px; color: var(--body-gray); line-height: 1.55; }
-.step-content .why {
-  margin-top: 12px; padding: 12px 16px;
-  background: var(--ice); border-radius: var(--r6);
-  border-left: 2px solid var(--ps-blue);
-  font-size: 14px; color: var(--body-gray);
-}
-html[data-theme="dark"] .step-content .why { background: #111; }
-
-/* ─── FAQ ────────────────────────────────────────────────────── */
-.faq-list { margin-top: 48px; }
-details.faq-item { border-bottom: 1px solid var(--divider); }
-html[data-theme="dark"] details.faq-item { border-color: #1e1e1e; }
-details.faq-item summary {
-  display: flex; justify-content: space-between; align-items: center;
-  gap: 20px; padding: 22px 0; cursor: pointer;
-  list-style: none; font-size: 18px; font-weight: 400; color: var(--charcoal);
+@media (max-width: 599px) { .site-footer { padding: 28px 20px; } }
+.site-footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
   transition: color 120ms ease;
 }
-html[data-theme="dark"] details.faq-item summary { color: #eee; }
-details.faq-item summary::-webkit-details-marker { display: none; }
-details.faq-item summary:hover { color: var(--ps-blue); }
-.faq-chevron {
-  width: 32px; height: 32px; border-radius: 50%;
-  border: 1px solid var(--mute); background: transparent;
-  display: grid; place-items: center; flex-shrink: 0;
-  color: var(--body-gray);
-  transition: transform 300ms ease, border-color 200ms ease, background 200ms ease;
-}
-details.faq-item[open] .faq-chevron {
-  transform: rotate(45deg);
-  border-color: var(--ps-blue); background: var(--ps-blue); color: #fff;
-}
-.faq-body {
-  padding: 0 40px 24px 0;
-  font-size: 16px; color: var(--body-gray); line-height: 1.65;
-  max-width: 72ch;
-}
-.faq-body p { margin-bottom: 10px; }
-.faq-body p:last-child { margin-bottom: 0; }
-.faq-body a { color: var(--ps-blue); text-decoration: underline; text-underline-offset: 3px; }
-.faq-body code {
-  font-family: var(--mono); font-size: 13px;
-  background: var(--ice); border: 1px solid var(--divider);
-  padding: 1px 6px; border-radius: var(--r3);
-}
-html[data-theme="dark"] .faq-body code { background: #1a1a1a; border-color: #2a2a2a; }
-
-/* ─── Footer ─────────────────────────────────────────────────── */
-footer {
-  background: var(--ps-footer);
-  color: #fff; padding: 72px 0 40px;
-}
-.foot-inner {
-  display: grid; grid-template-columns: 2fr 1fr 1fr;
-  gap: 48px; padding-bottom: 48px;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
-@media (max-width: 767px) {
-  .foot-inner { grid-template-columns: 1fr 1fr; }
-  .foot-inner > :first-child { grid-column: 1/-1; }
-}
-.foot-logo { font-size: 22px; font-weight: 300; margin-bottom: 12px; }
-.foot-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.5; max-width: 38ch; margin-bottom: 20px; }
-footer h5 { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
-footer ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-footer a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 15px; transition: color 120ms ease; }
-footer a:hover { color: #fff; }
-.foot-bottom {
-  display: flex; justify-content: space-between; flex-wrap: wrap;
-  gap: 12px; padding-top: 28px;
-  font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.4);
-}
-.no-tel { color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 8px; }
-.no-tel::before {
-  content: "";
-  width: 7px; height: 7px; border-radius: 50%;
-  background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.6);
-  display: inline-block;
-}
-
-/* ─── Tweaks panel ───────────────────────────────────────────── */
-.tweaks-panel {
-  display: none;
-  position: fixed; bottom: 20px; right: 20px;
-  background: #fff; border: 1px solid var(--divider);
-  border-radius: var(--r19); padding: 18px 20px;
-  box-shadow: var(--sh-16);
-  z-index: 200; min-width: 220px;
-  flex-direction: column; gap: 14px;
-}
-html[data-theme="dark"] .tweaks-panel {
-  background: #1a1a1a; border-color: #333; color: #eee;
-}
-.tweaks-panel.visible { display: flex; }
-.tweaks-panel h6 {
-  font-family: var(--mono); font-size: 10px; font-weight: 500;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--body-gray);
-}
-.tweak-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 14px; }
-.seg {
-  display: flex; border: 1px solid var(--mute); border-radius: var(--rpill);
-  overflow: hidden; background: var(--ice);
-}
-html[data-theme="dark"] .seg { border-color: #333; background: #111; }
-.seg button {
-  border: 0; background: transparent; cursor: pointer;
-  font-family: var(--font); font-size: 12px; font-weight: 500;
-  padding: 6px 14px; color: var(--body-gray);
-  transition: background 120ms ease, color 120ms ease;
-}
-.seg button.on { background: var(--ps-blue); color: #fff; }
-
-/* ─── Section header ─────────────────────────────────────────── */
-.section-header { max-width: 64ch; }
-.section-header .eyebrow {
-  font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
-  color: var(--ps-blue); margin-bottom: 14px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-header .eyebrow::before {
-  content: ""; display: block; width: 20px; height: 1px;
-  background: var(--ps-blue);
-}
-.section-header h2 { color: var(--charcoal); }
-html[data-theme="dark"] .section-header h2 { color: #eee; }
-.section-header p { color: var(--body-gray); margin-top: 12px; font-size: 18px; }
-
-/* ─── Dark surface section header ────────────────────────────── */
-.section-dark .section-header .eyebrow { color: var(--ps-cyan); }
-.section-dark .section-header .eyebrow::before { background: var(--ps-cyan); }
-.section-dark .section-header h2 { color: #fff; }
-.section-dark .section-header p { color: rgba(255,255,255,0.6); }
-
-/* ─── Release notes callout ──────────────────────────────────── */
-.relnotes {
-  margin-top: 24px; padding: 20px 22px;
-  background: var(--ice); border-radius: var(--r12);
-  border: 1px solid var(--divider);
-  font-size: 15px; color: var(--body-gray); line-height: 1.55;
-}
-html[data-theme="dark"] .relnotes { background: #111; border-color: #2a2a2a; }
-.relnotes strong { color: var(--charcoal); font-weight: 500; display: block; margin-bottom: 4px; }
-html[data-theme="dark"] .relnotes strong { color: #eee; }
-.relnotes a { color: var(--ps-blue); text-underline-offset: 3px; }
-
-/* ─── Util ───────────────────────────────────────────────────── */
-.visually-hidden { position: absolute; left: -9999px; }
+.site-footer a:hover { color: #fff; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     NAV
-════════════════════════════════════════ -->
-<nav class="site-nav" aria-label="Primary navigation">
-  <div class="wrap nav-inner">
-    <a href="#" class="nav-logo" aria-label="RemoteTap Helper home">
-      <span class="mark" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="1.5">
-          <circle cx="8" cy="8" r="3"/>
-          <path d="M3.5 8 A4.5 4.5 0 0 1 12.5 8" stroke-dasharray="2 2"/>
-        </svg>
-      </span>
-      RemoteTap Helper
+<nav aria-label="Primary navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <img src="AppIcon/macos/32x32/Group_4.png" alt="Remote Tap icon"/>
+      Remote Tap
     </a>
-    <ul class="nav-links">
-      <li><a href="#download">Download</a></li>
-      <li><a href="#install">Install</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <span class="nav-version">v0.1-debug · dev</span>
+    <a href="install.html" class="nav-link">Installation guide</a>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════
-     HERO (dark surface)
-════════════════════════════════════════ -->
-<section class="section-dark hero" id="top" data-screen-label="01 Hero">
-  <div class="wrap">
-    <div class="hero-inner">
-      <div>
-        <div class="hero-kicker">
-          <span class="pill-tag live">macOS · Debug Build</span>
-          <span class="pill-tag live">Windows · v1.0.0</span>
-        </div>
+<main class="hero">
+  <div class="hero-content">
+    <img src="AppIcon/macos/256x256/Group_4.png" alt="Remote Tap" class="hero-icon"/>
 
-        <h1 class="display-xl">
-          Your iPhone,<br/>
-          your Mac,<br/>
-          one <span class="accent">tap</span>.
-        </h1>
+    <h1>Control your computer from your phone.</h1>
+    <p class="sub">Remote Tap turns your phone into a media remote for your Mac or PC. Same Wi-Fi, no account, no cloud.</p>
 
-        <p class="sub">
-          RemoteTap Helper is a quiet menu bar agent. It lets your iPhone control media playback on your Mac over your local network. No account. No internet. No data leaves your device.
-        </p>
+    <div class="dl-buttons" id="dl-buttons">
+      <a href="https://downloads.remotetap.app/RemoteTap-debug.zip" class="btn btn-primary" id="btn-mac">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M12.15 13.16c-.58.85-1.2 1.7-2.14 1.72-.94.02-1.24-.56-2.31-.56-1.08 0-1.41.54-2.3.58-.92.04-1.62-.92-2.21-1.76C1.97 11.3 1.06 8.16 2.33 6.06c.63-1.04 1.76-1.7 2.98-1.72 .91-.02 1.76.61 2.31.61.56 0 1.6-.76 2.7-.65.46.02 1.75.19 2.58 1.4-.07.04-1.54.9-1.52 2.68.02 2.13 1.87 2.84 1.89 2.85-.02.06-.3 1.02-.92 2.02zM9.9 2.82c.5-.6.84-1.44.75-2.28-.72.03-1.6.48-2.12 1.09-.46.54-.87 1.4-.76 2.22.81.06 1.63-.41 2.13-1.03z"/></svg>
+        Download for macOS
+      </a>
+      <a href="https://downloads.remotetap.app/MediaRemote-Windows-v1.0.0.zip" class="btn btn-secondary" id="btn-win">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 2.3l6.5-.9v6.3H0V2.3zm7.3-1l8.7-1.2v7.6H7.3V1.3zM16 8.4v7.6l-8.7-1.2V8.4H16zM6.5 14.6L0 13.7V8.4h6.5v6.2z"/></svg>
+        Download for Windows
+      </a>
+    </div>
 
-        <div class="hero-cta">
-          <a href="#download" class="btn btn-primary">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-              <path d="M8 2v8m0 0l-3-3m3 3l3-3M2 13h12"/>
-            </svg>
-            Download for macOS
-          </a>
-          <a href="#install" class="btn btn-ghost" style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.2);">
-            Install guide
-          </a>
-        </div>
-
-        <div class="hero-meta" style="margin-top: 36px;">
-          <span>Version <b>0.1-debug</b></span>
-          <span>Requires <b>macOS 13 Ventura or later</b></span>
-          <span>Apple Silicon + Intel · Universal</span>
-          <span>Development signed · not notarized</span>
-        </div>
+    <div class="store-badges">
+      <div class="store-badge">
+        <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.5" y="0.5" width="119" height="39" rx="6" stroke="white" stroke-opacity="0.3"/>
+          <g fill="white">
+            <path d="M24.77 20.3a4.95 4.95 0 0 1 2.36-4.15 5.07 5.07 0 0 0-3.99-2.16c-1.68-.18-3.31 1.01-4.17 1.01-.87 0-2.19-.99-3.61-.96a5.31 5.31 0 0 0-4.47 2.73c-1.93 3.34-.49 8.27 1.36 10.97.93 1.33 2.01 2.82 3.44 2.76 1.39-.06 1.91-.89 3.59-.89 1.67 0 2.14.89 3.59.86 1.49-.02 2.43-1.33 3.33-2.67a11.04 11.04 0 0 0 1.53-3.12 4.77 4.77 0 0 1-2.96-4.38z"/>
+            <path d="M22.04 12.21a4.87 4.87 0 0 0 1.11-3.49 4.96 4.96 0 0 0-3.21 1.66 4.64 4.64 0 0 0-1.14 3.37 4.1 4.1 0 0 0 3.24-1.54z"/>
+            <text x="36" y="15" font-family="sans-serif" font-size="8" fill="white" opacity="0.8">Download on the</text>
+            <text x="36" y="28" font-family="sans-serif" font-size="13" font-weight="600" fill="white">App Store</text>
+          </g>
+        </svg>
+        <span>Coming soon</span>
       </div>
-
-      <div class="conn-diagram" aria-hidden="true">
-        <div class="conn-row">
-          <div class="conn-icon">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#fff" stroke-width="1.3">
-              <rect x="2" y="4" width="18" height="14" rx="2"/>
-              <path d="M6 18l10 0M11 18v2"/>
-            </svg>
-          </div>
-          <div class="conn-text">
-            <div class="t1">macOS agent</div>
-            <div class="t2">RemoteTap Helper</div>
-          </div>
-          <div class="conn-status" style="margin-left: auto;">
-            <span class="dot"></span>
-            running
-          </div>
-        </div>
-
-        <div class="conn-wire">
-          <div class="conn-wire-label">Bonjour · local network</div>
-          <div class="conn-wire-line">
-            <span class="conn-wire-dot"></span>
-            <span class="conn-wire-dot"></span>
-            <span class="conn-wire-dot"></span>
-          </div>
-          <div class="conn-wire-label">play · pause · skip · volume</div>
-        </div>
-
-        <div class="conn-row">
-          <div class="conn-icon">
-            <svg width="16" height="22" viewBox="0 0 16 22" fill="none" stroke="#fff" stroke-width="1.3">
-              <rect x="2" y="1" width="12" height="20" rx="3"/>
-              <circle cx="8" cy="18" r="1" fill="#fff"/>
-            </svg>
-          </div>
-          <div class="conn-text">
-            <div class="t1">iOS app</div>
-            <div class="t2">RemoteTap</div>
-          </div>
-        </div>
+      <div class="store-badge">
+        <svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.5" y="0.5" width="134" height="39" rx="6" stroke="white" stroke-opacity="0.3"/>
+          <g fill="white">
+            <path d="M21.8 11.06l-9.34 10.59 9.34 10.59-1.04.94L10.6 21.65l10.16-11.53 1.04.94zm-1.3 10.59l7.8 8.84-.02-17.67-7.78 8.83z" opacity="0.9"/>
+            <text x="38" y="15" font-family="sans-serif" font-size="7.5" fill="white" opacity="0.8">GET IT ON</text>
+            <text x="38" y="28" font-family="sans-serif" font-size="12.5" font-weight="600" fill="white">Google Play</text>
+          </g>
+        </svg>
+        <span>Coming soon</span>
       </div>
     </div>
+
+    <!-- Hidden SHA element for upload-build.sh compatibility -->
+    <span hidden><code id="sha-code">e5745e976d1c1483011128fe020023456eb695b2c558c0db4294279061863e4d</code></span>
   </div>
-</section>
+</main>
 
-<!-- ═══════════════════════════════════════
-     DOWNLOAD (light surface)
-════════════════════════════════════════ -->
-<section class="section-light" id="download" data-screen-label="02 Download">
-  <div class="wrap">
-    <div class="section-header">
-      <div class="eyebrow">Download</div>
-      <h2 class="display-l">Get the helper app.</h2>
-      <p>Available for macOS and Windows. Same iPhone app, same local network.</p>
-    </div>
-
-    <div class="dl-grid">
-
-      <!-- macOS -->
-      <div class="dl-card dl-card-mac">
-        <div class="status" style="color:#d97706;">macOS · Debug Build</div>
-        <h3 class="display-m">RemoteTap Helper <br/>for Mac</h3>
-        <p>Menu bar agent. Starts at login. No dock icon, no window, no fuss.</p>
-
-        <div class="specs-grid">
-          <div class="spec-item"><div class="k">Version</div><div class="v">debug</div></div>
-          <div class="spec-item"><div class="k">Built</div><div class="v">Jun 2026</div></div>
-          <div class="spec-item"><div class="k">Requires</div><div class="v">macOS 13+</div></div>
-          <div class="spec-item"><div class="k">Size</div><div class="v">4.2 MB</div></div>
-          <div class="spec-item"><div class="k">Architecture</div><div class="v">Universal</div></div>
-          <div class="spec-item"><div class="k">Network</div><div class="v">Local only</div></div>
-        </div>
-
-        <div style="margin-bottom: 16px; padding: 10px 14px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; font-size: 13px; color: #78350f;">
-          <strong>Development build</strong> — not notarized by Apple. Personal testing only. Use right-click → Open to bypass Gatekeeper.
-        </div>
-
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-          <a href="https://downloads.remotetap.app/RemoteTap-debug.zip" download="RemoteTap-debug.zip" class="btn btn-primary btn-sm">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M2 13h12"/></svg>
-            Download .zip
-          </a>
-
-        </div>
-
-        <div class="trust-row">
-          <span class="trust-chip">Development signed</span>
-          <span class="trust-chip">Not notarized</span>
-          <span class="trust-chip">No analytics</span>
-        </div>
-
-        <div class="checksum-bar" role="group" aria-label="SHA-256 checksum">
-          <div class="sha-label">SHA-256</div>
-          <code id="sha-code">e5745e976d1c1483011128fe020023456eb695b2c558c0db4294279061863e4d</code>
-          <button type="button" onclick="copyChecksum(this)">
-            <span class="label-text">Copy</span>
-          </button>
-        </div>
-
-        <div class="relnotes">
-          <strong>Debug Build — June 27, 2026</strong>
-          Development build for personal testing. Signed with a personal development certificate — not yet Developer ID signed or notarized. Production release will be available once Apple Developer subscription is active.
-        </div>
-      </div>
-
-      <!-- Windows -->
-      <div class="dl-card dl-card-mac">
-        <div class="status live">Windows · v1.0.0</div>
-        <h3 class="display-m">MediaRemote <br/>for Windows</h3>
-        <p>System tray app. Same iPhone app, same local-network protocol. No cloud, no account.</p>
-
-        <div class="specs-grid">
-          <div class="spec-item"><div class="k">Version</div><div class="v">1.0.0</div></div>
-          <div class="spec-item"><div class="k">Built</div><div class="v">Jul 2026</div></div>
-          <div class="spec-item"><div class="k">Requires</div><div class="v">Windows 10+</div></div>
-          <div class="spec-item"><div class="k">Size</div><div class="v">12 MB</div></div>
-          <div class="spec-item"><div class="k">Architecture</div><div class="v">x64</div></div>
-          <div class="spec-item"><div class="k">Network</div><div class="v">Local only</div></div>
-        </div>
-
-        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
-          <a href="https://downloads.remotetap.app/MediaRemote-Windows-v1.0.0.zip" download="MediaRemote-Windows-v1.0.0.zip" class="btn btn-primary btn-sm">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M2 13h12"/></svg>
-            Download .zip
-          </a>
-        </div>
-
-        <div class="trust-row">
-          <span class="trust-chip">No analytics</span>
-          <span class="trust-chip">No cloud</span>
-        </div>
-
-        <div class="checksum-bar" role="group" aria-label="SHA-256 checksum (Windows)">
-          <div class="sha-label">SHA-256</div>
-          <code id="sha-code-win">f09a2cadc9157bd50c600e1b76d305fdca9c63635f7a8fa30bed499ae537e76b</code>
-          <button type="button" onclick="copyChecksumWin(this)">
-            <span class="label-text">Copy</span>
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════
-     INSTALL + FAQ (dark surface)
-════════════════════════════════════════ -->
-<section class="section-dark" id="install" data-screen-label="03 Install">
-  <div class="wrap">
-    <div class="section-header">
-      <div class="eyebrow">Installation</div>
-      <h2 class="display-l">Six steps, most only once.</h2>
-      <p>If macOS ever shows a warning, there's a plain-language explanation directly below the step that triggered it.</p>
-    </div>
-
-    <div class="steps-list" id="steps-list" style="border-top: 1px solid rgba(255,255,255,0.1);">
-      <!-- rendered by JS -->
-    </div>
-  </div>
-</section>
-
-<section class="section-light" id="faq" data-screen-label="04 FAQ">
-  <div class="wrap">
-    <div class="section-header">
-      <div class="eyebrow">FAQ</div>
-      <h2 class="display-l">Honest answers.</h2>
-      <p>The questions people ask before installing software that isn't in the App Store.</p>
-    </div>
-
-    <div class="faq-list" id="faq-list" style="border-top: 1px solid var(--divider); margin-top: 48px;">
-      <!-- rendered by JS -->
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════
-     FOOTER (PlayStation Blue)
-════════════════════════════════════════ -->
-<footer data-screen-label="05 Footer">
-  <div class="wrap">
-    <div class="foot-inner">
-      <div>
-        <div class="foot-logo">RemoteTap Helper.</div>
-        <p class="foot-desc">A small macOS agent. Your iPhone and your Mac on the same Wi-Fi. Built by one developer, not a company.</p>
-        <div class="no-tel">No analytics · no accounts · no cloud</div>
-      </div>
-      <div>
-        <h5>Product</h5>
-        <ul>
-          <li><a href="#download">Download</a></li>
-          <li><a href="#install">Install guide</a></li>
-          <li><a href="#">Changelog</a></li>
-          <li><a href="#">iOS app ↗</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5>Developer</h5>
-        <ul>
-          <li><a href="#">Report an issue</a></li>
-          <li><a href="mailto:hello@remotetap.app">hello@remotetap.app</a></li>
-          <li><a href="#">Privacy note</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 RemoteTap Helper · Not affiliated with Apple Inc.</span>
-      <span>v0.1-debug · development build</span>
-    </div>
-  </div>
+<footer class="site-footer">
+  &copy; 2026 Remote Tap · <a href="mailto:hello@remotetap.app">hello@remotetap.app</a> · <a href="install.html">Installation guide</a>
 </footer>
 
-<!-- ═══════════════════════════════════════
-     TWEAKS
-════════════════════════════════════════ -->
-<div class="tweaks-panel" id="tweaks-panel" role="dialog" aria-label="Tweaks">
-  <h6>Tweaks</h6>
-  <div class="tweak-row">
-    <label>Theme</label>
-    <div class="seg" id="seg-theme">
-      <button data-v="light" class="on">Light</button>
-      <button data-v="dark">Dark</button>
-    </div>
-  </div>
-</div>
-
 <script>
-/* ─── Tweak defaults ─────────────────────────────────── */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "dark"
-}/*EDITMODE-END*/;
-let cur = {...TWEAK_DEFAULTS};
-
-function applyTweaks(t){
-  document.documentElement.setAttribute('data-theme', t.theme || 'light');
-  document.querySelectorAll('#seg-theme button').forEach(b => b.classList.toggle('on', b.dataset.v === t.theme));
+function detectOS() {
+  const ua = navigator.userAgent;
+  if (/Windows/i.test(ua)) return 'windows';
+  if (/Macintosh|Mac OS X/i.test(ua)) return 'macos';
+  return 'unknown';
 }
-function setTweak(k,v){ cur[k]=v; applyTweaks(cur); try{ window.parent.postMessage({type:'__edit_mode_set_keys',edits:{[k]:v}},'*'); }catch(e){} }
-document.querySelectorAll('#seg-theme button').forEach(b => b.addEventListener('click', ()=> setTweak('theme', b.dataset.v)));
 
-window.addEventListener('message', e => {
-  const d = e.data;
-  if (!d || typeof d !== 'object') return;
-  if (d.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('visible');
-  if (d.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
-});
-try{ window.parent.postMessage({type:'__edit_mode_available'},'*'); }catch(e){}
-applyTweaks(cur);
-
-/* ─── Checksum copy ──────────────────────────────────── */
-function copyChecksum(btn){
-  const hash = document.getElementById('sha-code')?.textContent || '';
-  navigator.clipboard?.writeText(hash);
-  const lbl = btn.querySelector('.label-text');
-  btn.classList.add('copied');
-  if(lbl){ lbl.textContent='Copied ✓'; }
-  setTimeout(()=>{ btn.classList.remove('copied'); if(lbl) lbl.textContent='Copy'; }, 1800);
-}
-window.copyChecksum = copyChecksum;
-
-/* ─── Checksum copy (Windows) ────────────────────────── */
-function copyChecksumWin(btn){
-  const hash = document.getElementById('sha-code-win')?.textContent || '';
-  navigator.clipboard?.writeText(hash);
-  const lbl = btn.querySelector('.label-text');
-  btn.classList.add('copied');
-  if(lbl){ lbl.textContent='Copied ✓'; }
-  setTimeout(()=>{ btn.classList.remove('copied'); if(lbl) lbl.textContent='Copy'; }, 1800);
-}
-window.copyChecksumWin = copyChecksumWin;
-
-/* ─── Install steps ──────────────────────────────────── */
-const STEPS = [
-  { n:"Download the .zip",
-    d:"Click the download button. Your browser will save a .zip file — Downloads folder is fine.",
-    w:"The app is distributed as a zip archive. Double-clicking it extracts Remote Tap.app, ready to drag to Applications." },
-  { n:"Unzip and drag to Applications",
-    d:"Double-click the .zip to extract it. Drag Remote Tap.app into your Applications folder.",
-    w:"Installing into /Applications ensures macOS treats it as a persistent app and settings save correctly. Don't run it directly from the Downloads folder." },
-  { n:"Launch from Applications",
-    d:"Open your Applications folder and double-click Remote Tap. You can delete the .zip file now.",
-    w:"Launching from Applications is what tells macOS this is a properly installed app." },
-  { n:"Handle the Gatekeeper warning",
-    d:"macOS will say the app can't be opened. Right-click (Control-click) the app icon → Open → click Open in the dialog. Alternatively, go to System Settings → Privacy & Security → Open Anyway.",
-    w:"This is a development build signed with a personal certificate — not yet signed with a Developer ID or notarized by Apple. Right-click → Open is the correct way to bypass Gatekeeper for development builds. The production release will pass Gatekeeper automatically." },
-  { n:"Allow local network access",
-    d:"macOS will ask if RemoteTap Helper can find and connect to devices on your local network. Click Allow.",
-    w:"The whole point of RemoteTap is Bonjour discovery — your iPhone needs to see your Mac. This permission is required for the app to work." },
-  { n:"Open RemoteTap on your iPhone",
-    d:"Your Mac should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.",
-    w:"No internet needed. Everything stays on your local network." }
-];
-
-const stepsList = document.getElementById('steps-list');
-STEPS.forEach((s, i) => {
-  const el = document.createElement('div');
-  el.className = 'step';
-  el.innerHTML = `
-    <div class="step-num">${i+1}</div>
-    <div class="step-content">
-      <h4>${s.n}</h4>
-      <p>${s.d}</p>
-      <div class="why"><strong style="color:rgba(255,255,255,0.6);font-weight:500;">Why: </strong>${s.w}</div>
-    </div>
-  `;
-  // Dark surface adjustments
-  el.querySelector('h4').style.color = 'rgba(255,255,255,0.9)';
-  el.querySelector('p').style.color = 'rgba(255,255,255,0.55)';
-  el.querySelector('.why').style.background = 'rgba(255,255,255,0.05)';
-  el.querySelector('.why').style.borderLeftColor = '#0070cc';
-  el.querySelector('.why').style.color = 'rgba(255,255,255,0.45)';
-  el.style.borderBottomColor = 'rgba(255,255,255,0.08)';
-  stepsList.appendChild(el);
-});
-
-/* ─── FAQ ────────────────────────────────────────────── */
-const FAQ = [
-  { q:"Why isn't this on the Mac App Store?",
-    a:`<p>The App Store sandbox restricts the system entitlements RemoteTap Helper requires — specifically the ability to interact with media controls, window focus, and system-level audio routing. These entitlements aren't granted to sandboxed apps, so distributing outside the App Store is the only way to make it work.</p><p>This is an unusual situation and we understand it raises questions — which is why the rest of this FAQ exists.</p>` },
-  { q:"Is this safe to download?",
-    a:`<p>This is a development build signed with a personal Apple developer certificate. It has <em>not</em> been signed with a Developer ID or notarized by Apple yet — that requires an active Apple Developer Program subscription. You can verify the signature with <code>codesign -dvv /Applications/Remote\\ Tap.app</code>.</p><p>macOS will show a warning on first launch. Use right-click → Open to proceed. The production release will be fully signed and notarized and will not require this workaround.</p>` },
-  { q:"What does this app actually do on my machine?",
-    a:`<p>RemoteTap Helper runs as a menu bar agent — no dock icon, no window. When running it advertises itself on your local network via Bonjour, waits for your iPhone to connect, and executes incoming commands: play/pause, skip, volume, and window focus. That's it.</p><p>It opens no outbound connections. It doesn't phone home. It is ~4 MB on disk.</p>` },
-  { q:"Does this app send any data off my device?",
-    a:`<p>No. There is no analytics SDK, no crash reporter, and no telemetry of any kind. The app makes no outbound network connections — it only listens on the local network for your iPhone.</p><p>You can verify this independently with <code>lsof -i -P | grep RemoteTap</code> or Little Snitch. If this ever changes, it will be disclosed here and in the release notes before the update ships.</p>` },
-  { q:"What permissions does the app request?",
-    a:`<p><strong>Local Network</strong> — required. Used to advertise on Bonjour and receive commands from the iOS app. Without this the app cannot function.</p><p><strong>Accessibility</strong> — optional. Only requested if you enable the "window focus" feature. Decline it and everything except window management continues to work normally.</p><p>No microphone, camera, contacts, calendar, or file system access of any kind.</p>` },
-  { q:"How do I uninstall it?",
-    a:`<p>Quit from the menu bar icon, then drag RemoteTap Helper from your Applications folder to the Trash. That's it for most users.</p><p>To remove all traces: delete <code>~/Library/Application Support/RemoteTapHelper</code> (a small preferences file). There are no LaunchAgents, no kernel extensions, and nothing in <code>/Library</code>.</p>` }
-];
-
-const faqList = document.getElementById('faq-list');
-FAQ.forEach(item => {
-  const el = document.createElement('details');
-  el.className = 'faq-item';
-  el.innerHTML = `
-    <summary>
-      <span>${item.q}</span>
-      <span class="faq-chevron" aria-hidden="true">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4">
-          <path d="M6 2v8M2 6h8"/>
-        </svg>
-      </span>
-    </summary>
-    <div class="faq-body">${item.a}</div>
-  `;
-  el.querySelector('summary').addEventListener('click', e => {
-    e.preventDefault();
-    el.hasAttribute('open') ? el.removeAttribute('open') : el.setAttribute('open','');
-  });
-  faqList.appendChild(el);
+document.addEventListener('DOMContentLoaded', () => {
+  const os = detectOS();
+  if (os === 'windows') {
+    const btnMac = document.getElementById('btn-mac');
+    const btnWin = document.getElementById('btn-win');
+    const container = document.getElementById('dl-buttons');
+    // Swap classes
+    btnMac.className = 'btn btn-secondary';
+    btnWin.className = 'btn btn-primary';
+    // Reorder: Windows first
+    container.insertBefore(btnWin, btnMac);
+  }
 });
 </script>
 
