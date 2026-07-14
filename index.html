@@ -634,7 +634,7 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
       <div>
         <div class="hero-kicker">
           <span class="pill-tag live">macOS · Debug Build</span>
-          <span class="pill-tag soon">Windows · in development</span>
+          <span class="pill-tag live">Windows · v1.0.0</span>
         </div>
 
         <h1 class="display-xl">
@@ -720,7 +720,7 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
     <div class="section-header">
       <div class="eyebrow">Download</div>
       <h2 class="display-l">Get the helper app.</h2>
-      <p>macOS is available now. Windows is coming — leave your email and we'll tell you once.</p>
+      <p>Available for macOS and Windows. Same iPhone app, same local network.</p>
     </div>
 
     <div class="dl-grid">
@@ -773,20 +773,39 @@ html[data-theme="dark"] .relnotes strong { color: #eee; }
       </div>
 
       <!-- Windows -->
-      <div class="dl-card dl-card-win">
-        <div class="status soon">Windows · In development</div>
-        <h3 class="display-m">RemoteTap Helper <br/>for Windows</h3>
-        <p>Same iPhone app. Same local-network protocol. No cloud. Shipping as a signed <code style="font-family:var(--mono);font-size:13px;background:var(--divider);border:1px solid var(--mute);padding:1px 6px;border-radius:3px;">.msi</code> installer.</p>
+      <div class="dl-card dl-card-mac">
+        <div class="status live">Windows · v1.0.0</div>
+        <h3 class="display-m">MediaRemote <br/>for Windows</h3>
+        <p>System tray app. Same iPhone app, same local-network protocol. No cloud, no account.</p>
 
-        <div style="margin-bottom: 24px; padding: 20px 0; border-top: 1px solid var(--mute);">
-          <p style="font-size: 14px; color: var(--body-gray); margin-bottom: 14px;">Get one email when it ships.</p>
-          <form class="notify-form" onsubmit="handleNotify(event)">
-            <input type="email" placeholder="your@email.com" required aria-label="Email address"/>
-            <button type="submit">Notify me</button>
-          </form>
+        <div class="specs-grid">
+          <div class="spec-item"><div class="k">Version</div><div class="v">1.0.0</div></div>
+          <div class="spec-item"><div class="k">Built</div><div class="v">Jul 2026</div></div>
+          <div class="spec-item"><div class="k">Requires</div><div class="v">Windows 10+</div></div>
+          <div class="spec-item"><div class="k">Size</div><div class="v">12 MB</div></div>
+          <div class="spec-item"><div class="k">Architecture</div><div class="v">x64</div></div>
+          <div class="spec-item"><div class="k">Network</div><div class="v">Local only</div></div>
         </div>
 
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+          <a href="https://downloads.remotetap.app/MediaRemote-Windows-v1.0.0.zip" download="MediaRemote-Windows-v1.0.0.zip" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M8 2v8m0 0l-3-3m3 3l3-3M2 13h12"/></svg>
+            Download .zip
+          </a>
+        </div>
 
+        <div class="trust-row">
+          <span class="trust-chip">No analytics</span>
+          <span class="trust-chip">No cloud</span>
+        </div>
+
+        <div class="checksum-bar" role="group" aria-label="SHA-256 checksum (Windows)">
+          <div class="sha-label">SHA-256</div>
+          <code id="sha-code-win">f09a2cadc9157bd50c600e1b76d305fdca9c63635f7a8fa30bed499ae537e76b</code>
+          <button type="button" onclick="copyChecksumWin(this)">
+            <span class="label-text">Copy</span>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -908,12 +927,16 @@ function copyChecksum(btn){
 }
 window.copyChecksum = copyChecksum;
 
-/* ─── Notify form ────────────────────────────────────── */
-function handleNotify(e){
-  e.preventDefault();
-  e.target.innerHTML = '<div style="padding:14px;font-size:14px;color:#4ade80;font-family:var(--mono);">✓ One email, when it ships. Nothing else.</div>';
+/* ─── Checksum copy (Windows) ────────────────────────── */
+function copyChecksumWin(btn){
+  const hash = document.getElementById('sha-code-win')?.textContent || '';
+  navigator.clipboard?.writeText(hash);
+  const lbl = btn.querySelector('.label-text');
+  btn.classList.add('copied');
+  if(lbl){ lbl.textContent='Copied ✓'; }
+  setTimeout(()=>{ btn.classList.remove('copied'); if(lbl) lbl.textContent='Copy'; }, 1800);
 }
-window.handleNotify = handleNotify;
+window.copyChecksumWin = copyChecksumWin;
 
 /* ─── Install steps ──────────────────────────────────── */
 const STEPS = [
