@@ -163,6 +163,12 @@ nav {
   color: var(--text-muted);
   letter-spacing: 0.04em;
 }
+.store-badge--live {
+  pointer-events: auto;
+  opacity: 1;
+  text-decoration: none;
+}
+.store-badge--live:hover svg rect { stroke-opacity: 0.7; }
 
 /* Footer */
 .site-footer {
@@ -212,7 +218,10 @@ nav {
     </div>
 
     <div class="store-badges">
-      <div class="store-badge">
+      <a href="https://apps.apple.com/ua/app/remotetap-media-controller/id6794616374"
+         class="store-badge store-badge--live"
+         target="_blank" rel="noopener noreferrer"
+         aria-label="Download on the App Store">
         <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="0.5" y="0.5" width="119" height="39" rx="6" stroke="white" stroke-opacity="0.3"/>
           <g fill="white">
@@ -222,8 +231,7 @@ nav {
             <text x="36" y="28" font-family="sans-serif" font-size="13" font-weight="600" fill="white">App Store</text>
           </g>
         </svg>
-        <span>Coming soon</span>
-      </div>
+      </a>
       <div class="store-badge">
         <svg width="135" height="40" viewBox="0 0 135 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect x="0.5" y="0.5" width="134" height="39" rx="6" stroke="white" stroke-opacity="0.3"/>
