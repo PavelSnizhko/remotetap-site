@@ -133,10 +133,10 @@ nav {
 
 <main class="legal">
   <h1>Privacy Policy</h1>
-  <p class="updated">Last Updated: July, 2025</p>
+  <p class="updated">Last Updated: October, 2026</p>
 
   <h2>Overview</h2>
-  <p>This privacy policy explains how Remote Tap collects, stores, and processes data from iOS and macOS app users.</p>
+  <p>This privacy policy explains how Remote Tap collects, stores, and processes data across its iOS, macOS, and Windows applications.</p>
 
   <h2>I. Data Collection and Processing</h2>
 
@@ -147,34 +147,76 @@ nav {
   Information provided through support requests, emails, and feedback about our apps helps us address user issues and improve our offerings.</p>
 
   <p><strong>Analytics Data</strong><br/>
-  We use Firebase Analytics (provided by Google) to understand how users interact with the app. This includes usage events such as button presses, screen views, and tab selections. Firebase may collect an app instance identifier, app usage data, and approximate location derived from IP address. No personally identifiable information is collected through analytics. Analytics data is not linked to your identity. You can learn more about Google's data practices at <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>.</p>
+  The iOS app uses Firebase Analytics (provided by Google) to understand how users interact with the app. This includes usage events such as button presses, screen views, and tab selections. Firebase may collect an app instance identifier, app usage data, and approximate location derived from IP address. No personally identifiable information is collected through analytics. Analytics data is not linked to your identity. The macOS and Windows companion apps do not use any cloud-based analytics or telemetry. You can learn more about Google's data practices at <a href="https://policies.google.com/privacy">https://policies.google.com/privacy</a>.</p>
 
   <p><strong>Payment Data</strong><br/>
-  We do not collect payment instrument details. All transactions occur through Apple's App Store system without direct access to financial information.</p>
+  We do not collect payment instrument details. Transactions occur through Apple's App Store or the Microsoft Store without direct access to financial information.</p>
 
   <p><strong>Local Network Data</strong><br/>
   Remote Tap uses local network access to discover and communicate with companion apps on the same Wi-Fi network. This communication happens entirely on your local network using TLS encryption. No local network data is transmitted to external servers.</p>
 
-  <h2>II. Data Retention</h2>
-  <p>Personal data is retained according to legal requirements, regulatory obligations, and the purposes for which it was collected. Analytics data is retained according to Google Firebase's default retention policies.</p>
+  <p><strong>Device Pairing Data</strong><br/>
+  When an iPhone connects to the macOS or Windows companion app for the first time, the companion app requires explicit user approval before accepting commands. Device identifiers (device name, device ID, and certificate fingerprint) are stored locally on the companion device to remember trusted pairings. This data never leaves your local devices.</p>
 
-  <h2>III. Data Sharing</h2>
-  <p>Data may be shared with:</p>
+  <h2>II. Screen Capture and Subtitle Recognition</h2>
+
+  <p>Remote Tap includes a subtitle capture feature that allows the iPhone app to request the macOS or Windows companion app to read on-screen subtitles using optical character recognition (OCR).</p>
+
+  <p><strong>How it works:</strong></p>
   <ul>
-    <li>Google (Firebase Analytics) for app usage analytics</li>
-    <li>Regulators or law enforcement when legally required</li>
+    <li>The iPhone sends a capture request to the companion app over your local network.</li>
+    <li>The companion app captures a screenshot of a portion of the active window, processes it with on-device OCR (Apple Vision framework on macOS, Windows.Media.Ocr on Windows), and extracts text that appears to be subtitles.</li>
+    <li>Only the recognized text is sent back to the iPhone over the encrypted local connection. The screenshot itself is never saved to disk, never transmitted over the network, and never sent to any external server.</li>
   </ul>
 
-  <h2>IV. Third-Party Services</h2>
-  <p>This app uses Firebase Analytics, a service provided by Google. Firebase is subject to Google's privacy policy. This privacy policy does not apply to third-party services, and we are not responsible for their practices.</p>
+  <p><strong>Privacy safeguards:</strong></p>
+  <ul>
+    <li>All OCR processing happens entirely on your Mac or PC — no cloud services are involved.</li>
+    <li>Screenshots are held in memory only for the duration of processing and then discarded.</li>
+    <li>The subtitle capture feature is off by default and must be explicitly enabled by the user on the companion app.</li>
+    <li>On macOS, the system requires you to grant Screen Recording permission before any capture can occur.</li>
+    <li>DRM-protected content (e.g., Netflix) may appear as a black frame; the app detects this and reports that the player blocks screen capture.</li>
+    <li>Captured subtitle text is never included in analytics events — only success/failure outcomes are logged on the iOS app.</li>
+  </ul>
 
-  <h2>V. Analytics Opt-Out</h2>
-  <p>You can opt out of analytics data collection by disabling the analytics toggle in the app's Settings screen. When analytics is disabled, no usage events are sent to Firebase.</p>
+  <h2>III. Platform-Specific Permissions</h2>
 
-  <h2>VI. Security</h2>
-  <p>We implement appropriate technical and organizational measures including TLS encryption for all peer-to-peer connections to protect data and will notify users of suspected breaches.</p>
+  <p><strong>iOS</strong><br/>
+  Camera access (for scanning a QR code to connect to your Mac or PC) and local network access (for device discovery via Bonjour).</p>
 
-  <h2>VII. User Rights</h2>
+  <p><strong>macOS</strong><br/>
+  Local network access (for receiving commands from the iPhone) and Screen Recording permission (required for the subtitle capture feature). The Screen Recording permission is managed through System Settings and can be revoked at any time.</p>
+
+  <p><strong>Windows</strong><br/>
+  No special system permissions are required. Screen capture uses standard Windows APIs available to all desktop applications. The in-app subtitle capture toggle is the user-facing control for this feature.</p>
+
+  <h2>IV. Data Retention</h2>
+  <p>Personal data is retained according to legal requirements, regulatory obligations, and the purposes for which it was collected. Analytics data is retained according to Google Firebase's default retention policies. Captured subtitle text is ephemeral and is not stored persistently on any device.</p>
+
+  <h2>V. Data Sharing</h2>
+  <p>Data may be shared with:</p>
+  <ul>
+    <li>Google (Firebase Analytics) for app usage analytics on iOS only</li>
+    <li>Regulators or law enforcement when legally required</li>
+  </ul>
+  <p>No screen capture data, recognized text, or subtitle content is ever shared with third parties.</p>
+
+  <h2>VI. Third-Party Services</h2>
+  <p>The iOS app uses Firebase Analytics, a service provided by Google. Firebase is subject to Google's privacy policy. The macOS and Windows companion apps do not use any third-party analytics or data services. This privacy policy does not apply to third-party services, and we are not responsible for their practices.</p>
+
+  <h2>VII. Analytics Opt-Out</h2>
+  <p>You can opt out of analytics data collection by disabling the analytics toggle in the iOS app's Settings screen. When analytics is disabled, no usage events are sent to Firebase.</p>
+
+  <h2>VIII. Security</h2>
+  <p>We implement appropriate technical and organizational measures to protect data, including:</p>
+  <ul>
+    <li>TLS encryption for all communication between devices on your local network</li>
+    <li>Device pairing approval to prevent unauthorized access</li>
+    <li>On-device-only processing for screen capture and OCR</li>
+  </ul>
+  <p>We will notify users of suspected breaches.</p>
+
+  <h2>IX. User Rights</h2>
   <p>Users can:</p>
   <ul>
     <li>Access their personal data</li>
@@ -183,16 +225,17 @@ nav {
     <li>Receive data in structured formats</li>
     <li>Object to or restrict processing</li>
     <li>Withdraw consent at any time</li>
+    <li>Revoke Screen Recording permission on macOS or disable the subtitle capture toggle on Windows at any time</li>
   </ul>
   <p>To exercise any of these rights, contact us at <a href="mailto:pavel.snizhko.2000@gmail.com">pavel.snizhko.2000@gmail.com</a>.</p>
 
-  <h2>VIII. Children's Privacy</h2>
+  <h2>X. Children's Privacy</h2>
   <p>Our apps are not intended for children (under the age of 13 or such higher age as required by applicable law). We do not knowingly collect children's data and will remove such information if discovered.</p>
 
-  <h2>IX. Contact</h2>
+  <h2>XI. Contact</h2>
   <p>If you have questions about this privacy policy or your data, contact us at <a href="mailto:pavel.snizhko.2000@gmail.com">pavel.snizhko.2000@gmail.com</a>.</p>
 
-  <h2>X. Policy Changes</h2>
+  <h2>XII. Policy Changes</h2>
   <p>Updates will be posted on this page and communicated via email when appropriate.</p>
 </main>
 
