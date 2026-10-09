@@ -384,8 +384,8 @@ details.faq-item[open] .faq-chevron {
           <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
         </summary>
         <div class="faq-body">
-          <p>No. There is no analytics SDK, no crash reporter, and no telemetry of any kind. The app makes no outbound network connections — it only listens on the local network for your phone.</p>
-          <p>On macOS you can verify this with <code>lsof -i -P | grep RemoteTap</code> or Little Snitch. On Windows, check with Resource Monitor or Wireshark. If this ever changes, it will be disclosed here and in the release notes before the update ships.</p>
+          <p>No analytics SDK, no crash reporter, and no telemetry of any kind. The only outbound connection the macOS app makes is a periodic HTTPS request to remotetap.app to check for updates — no personal data is sent. The Windows version (installed via Microsoft Store) receives updates through the Store. Beyond that, both apps only listen on the local network for your phone.</p>
+          <p>On macOS you can verify this with <code>lsof -i -P | grep RemoteTap</code> or Little Snitch. On Windows, check with Resource Monitor or Wireshark.</p>
         </div>
       </details>
       <details class="faq-item">

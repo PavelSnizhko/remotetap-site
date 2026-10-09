@@ -26,6 +26,9 @@ Remote Tap uses local network access to discover and communicate with companion 
 **Device Pairing Data**
 When an iPhone connects to the macOS or Windows companion app for the first time, the companion app requires explicit user approval before accepting commands. Device identifiers (device name, device ID, and certificate fingerprint) are stored locally on the companion device to remember trusted pairings. This data never leaves your local devices.
 
+**Software Updates (macOS)**
+The macOS app periodically checks remotetap.app for available updates via a standard HTTPS request. No personal information is sent — only a normal HTTP request is made to download the update feed. System profiling is disabled; no hardware or OS details are collected through this mechanism.
+
 ## II. Screen Capture and Subtitle Recognition
 
 Remote Tap includes a subtitle capture feature that allows the iPhone app to request the macOS or Windows companion app to read on-screen subtitles using optical character recognition (OCR).
