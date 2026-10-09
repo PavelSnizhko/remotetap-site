@@ -5,7 +5,8 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 BUCKET="remotetap-downloads"
 DMG_NAME="RemoteTap.dmg"
-DMG_PATH="${1:-$HOME/Projects/study/MediaRemote/build/macos/$DMG_NAME}"
+R2_KEY="releases/$DMG_NAME"
+DMG_PATH="${1:-$HOME/Projects/study/MediaRemote/build/releases/$DMG_NAME}"
 
 # ── 1. Verify DMG exists ────────────────────────────────────────────────────
 if [[ ! -f "$DMG_PATH" ]]; then
@@ -16,8 +17,8 @@ fi
 echo "→ DMG: $DMG_PATH ($(du -sh "$DMG_PATH" | cut -f1))"
 
 # ── 2. Upload to Cloudflare R2 ──────────────────────────────────────────────
-echo "→ Uploading to R2 ($BUCKET/$DMG_NAME)..."
-wrangler r2 object put "$BUCKET/$DMG_NAME" --file "$DMG_PATH" --remote
+echo "→ Uploading to R2 ($BUCKET/$R2_KEY)..."
+wrangler r2 object put "$BUCKET/$R2_KEY" --file "$DMG_PATH" --remote
 
 # ── 3. Update SHA-256 in index.html ──────────────────────────────────────────
 SHA=$(shasum -a 256 "$DMG_PATH" | awk '{print $1}')
@@ -36,4 +37,4 @@ else
   echo "✓ Checksum unchanged — no commit needed"
 fi
 
-echo "✓ Done — https://downloads.remotetap.app/$DMG_NAME"
+echo "✓ Done — https://downloads.remotetap.app/$R2_KEY"
