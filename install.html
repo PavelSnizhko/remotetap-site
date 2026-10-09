@@ -309,40 +309,32 @@ details.faq-item[open] .faq-chevron {
       <div class="step">
         <div class="step-num">1</div>
         <div>
-          <h4>Download the .zip</h4>
-          <p>Click the Windows download button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>. Save the .zip file to your Downloads folder.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app is distributed as a zip archive containing the executable and supporting files.</div>
+          <h4>Install from Microsoft Store</h4>
+          <p>Click the "Get it on Microsoft Store" button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>, or search for "Remote Tap" in the Microsoft Store app. Click Install.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The Microsoft Store handles installation, updates, and code signing automatically.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <h4>Extract the zip</h4>
-          <p>Right-click the .zip → "Extract All..." and choose a permanent location (e.g. Program Files or your user folder).</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Windows needs to extract the files before you can run the app. Don't run it directly from within the zip.</div>
+          <h4>Launch the app</h4>
+          <p>Open Remote Tap from the Start menu. The app runs in the system tray — look for the icon near the clock.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Like the macOS version, it runs quietly in the background — no window, just a system tray icon.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div>
-          <h4>Run the executable</h4>
-          <p>Open the extracted folder and double-click MediaRemote.exe. The app runs in the system tray.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Like the macOS version, it runs quietly in the background — no window, just a system tray icon.</div>
+          <h4>Allow through Windows Firewall</h4>
+          <p>Windows will ask if you want to allow Remote Tap to communicate on your network. Click "Allow access" for private networks.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app needs to listen on your local network so your phone can discover and connect to it. Only private network access is needed.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
         <div>
-          <h4>Allow through Windows Firewall</h4>
-          <p>Windows will ask if you want to allow MediaRemote to communicate on your network. Click "Allow access" for private networks.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app needs to listen on your local network so your phone can discover and connect to it. Only private network access is needed.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div>
           <h4>Connect from your phone</h4>
-          <p>Open Remote Tap on your iPhone or Android. Your PC should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
+          <p>Open Remote Tap on your iPhone. Your PC should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
           <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>No internet needed. Everything stays on your local network.</div>
         </div>
       </div>
@@ -352,7 +344,7 @@ details.faq-item[open] .faq-chevron {
   <!-- FAQ -->
   <div class="faq-section">
     <h2>Frequently asked questions</h2>
-    <p>The questions people ask before installing software that isn't in an app store.</p>
+    <p>The questions people ask before installing — especially the macOS version, which is distributed outside the App Store.</p>
 
     <div class="faq-list">
       <details class="faq-item">
@@ -373,7 +365,7 @@ details.faq-item[open] .faq-chevron {
         <div class="faq-body">
           <p>The macOS build is a development build signed with a personal Apple developer certificate. It has <em>not</em> been signed with a Developer ID or notarized by Apple yet. You can verify the signature with <code>codesign -dvv /Applications/Remote\ Tap.app</code>.</p>
           <p>macOS will show a warning on first launch. Use right-click → Open to proceed. The production release will be fully signed and notarized.</p>
-          <p>The Windows build runs without code signing. Windows Defender SmartScreen may show a warning on first run — click "More info" → "Run anyway."</p>
+          <p>The Windows version is distributed through the Microsoft Store, which handles code signing and verification automatically.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -414,7 +406,7 @@ details.faq-item[open] .faq-chevron {
         </summary>
         <div class="faq-body">
           <p><strong>macOS:</strong> Quit from the menu bar icon, then drag Remote Tap from your Applications folder to the Trash. To remove all traces, delete <code>~/Library/Application Support/RemoteTapHelper</code>. There are no LaunchAgents, kernel extensions, or files in <code>/Library</code>.</p>
-          <p><strong>Windows:</strong> Right-click the system tray icon and quit, then delete the extracted folder. No registry entries or system modifications to clean up.</p>
+          <p><strong>Windows:</strong> Uninstall from Settings → Apps → Installed apps, or right-click Remote Tap in the Start menu and select Uninstall.</p>
         </div>
       </details>
     </div>
