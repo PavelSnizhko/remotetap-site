@@ -97,7 +97,7 @@ Users can:
 - Withdraw consent at any time
 - Revoke Screen Recording permission on macOS or disable the subtitle capture toggle on Windows at any time
 
-To exercise any of these rights, contact us at pavel.snizhko.2000@gmail.com.
+To exercise any of these rights, contact us at remote.tap.assistant@gmail.com.
 
 ## X. Children's Privacy
 
@@ -105,7 +105,7 @@ Our apps are not intended for children (under the age of 13 or such higher age a
 
 ## XI. Contact
 
-If you have questions about this privacy policy or your data, contact us at pavel.snizhko.2000@gmail.com.
+If you have questions about this privacy policy or your data, contact us at remote.tap.assistant@gmail.com.
 
 ## XII. Policy Changes
 
