@@ -261,37 +261,21 @@ details.faq-item[open] .faq-chevron {
       <div class="step">
         <div class="step-num">1</div>
         <div>
-          <h4>Download the .zip</h4>
-          <p>Click the download button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>. Your browser will save a .zip file — Downloads folder is fine.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app is distributed as a zip archive. Double-clicking it extracts Remote Tap.app, ready to drag to Applications.</div>
+          <h4>Download and install</h4>
+          <p>Click the download button on the <a href="index.html" style="color:var(--accent-hover)">homepage</a>. Open the .dmg file and drag Remote Tap into your Applications folder.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Installing into /Applications ensures macOS treats it as a persistent app and settings save correctly. You can eject and delete the .dmg after installing.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <h4>Unzip and drag to Applications</h4>
-          <p>Double-click the .zip to extract it. Drag Remote Tap.app into your Applications folder.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Installing into /Applications ensures macOS treats it as a persistent app and settings save correctly. Don't run it directly from the Downloads folder.</div>
+          <h4>Launch the app</h4>
+          <p>Open your Applications folder and double-click Remote Tap. The app is signed and notarized by Apple, so it will open without any warnings.</p>
+          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>The app runs as a menu bar agent — no dock icon, just an icon in your menu bar near the clock.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <div>
-          <h4>Launch from Applications</h4>
-          <p>Open your Applications folder and double-click Remote Tap. You can delete the .zip file now.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>Launching from Applications is what tells macOS this is a properly installed app.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <div>
-          <h4>Handle the Gatekeeper warning</h4>
-          <p>macOS will say the app can't be opened. Right-click (Control-click) the app icon → Open → click Open in the dialog. Alternatively, go to System Settings → Privacy &amp; Security → Open Anyway.</p>
-          <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>This is a development build signed with a personal certificate — not yet signed with a Developer ID or notarized by Apple. Right-click → Open is the correct way to bypass Gatekeeper for development builds. The production release will pass Gatekeeper automatically.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
         <div>
           <h4>Allow local network access</h4>
           <p>macOS will ask if Remote Tap can find and connect to devices on your local network. Click Allow.</p>
@@ -299,10 +283,10 @@ details.faq-item[open] .faq-chevron {
         </div>
       </div>
       <div class="step">
-        <div class="step-num">6</div>
+        <div class="step-num">4</div>
         <div>
-          <h4>Open Remote Tap on your iPhone</h4>
-          <p>Your Mac should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
+          <h4>Connect from your phone</h4>
+          <p>Open Remote Tap on your iPhone. Your Mac should appear as a discovered device within a few seconds. Tap to pair. Both devices must be on the same Wi-Fi.</p>
           <div class="why"><strong style="color:var(--text-secondary);font-weight:500;">Why: </strong>No internet needed. Everything stays on your local network.</div>
         </div>
       </div>
@@ -369,8 +353,7 @@ details.faq-item[open] .faq-chevron {
           <span class="faq-chevron" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2v8M2 6h8"/></svg></span>
         </summary>
         <div class="faq-body">
-          <p>The macOS build is a development build signed with a personal Apple developer certificate. It has <em>not</em> been signed with a Developer ID or notarized by Apple yet. You can verify the signature with <code>codesign -dvv /Applications/Remote\ Tap.app</code>.</p>
-          <p>macOS will show a warning on first launch. Use right-click → Open to proceed. The production release will be fully signed and notarized.</p>
+          <p>The macOS build is signed with a Developer ID certificate and notarized by Apple. macOS verifies both the signature and notarization before allowing the app to launch — no Gatekeeper warnings. You can verify the signature yourself with <code>codesign -dvv /Applications/Remote\ Tap.app</code> and check notarization with <code>spctl -a -v /Applications/Remote\ Tap.app</code>.</p>
           <p>The Windows version is distributed through the Microsoft Store, which handles code signing and verification automatically.</p>
         </div>
       </details>
