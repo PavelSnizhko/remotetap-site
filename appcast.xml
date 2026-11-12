@@ -8,7 +8,7 @@
             <sparkle:version>4</sparkle:version>
             <sparkle:shortVersionString>1.4.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
-            <enclosure url="https://remotetap.app/releases/RemoteTap.dmg" length="5988670" type="application/octet-stream" sparkle:edSignature="k1tDgdsS/3a1acb4GY52P0n3cCdYIoy3UmljRazv3d6J4oL/GqJcI4ZfxnxXIi7r9MD4FjKeUcj4Js83zwvaAQ=="/>
+            <enclosure url="https://downloads.remotetap.app/releases/RemoteTap.dmg" length="5988670" type="application/octet-stream" sparkle:edSignature="k1tDgdsS/3a1acb4GY52P0n3cCdYIoy3UmljRazv3d6J4oL/GqJcI4ZfxnxXIi7r9MD4FjKeUcj4Js83zwvaAQ=="/>
         </item>
     </channel>
 </rss>
